@@ -32,7 +32,7 @@ Describe "test_domain.Domain objects" {
     context "Groups" {
 
         $ADGroups = @(
-            “cn=CDMSUsersGroup,ou=Groups,ou=sysops,dc=test_domain,dc=local” 
+            “cn=RTMFUsersGroup,ou=Groups,ou=sysops,dc=test_domain,dc=local” 
             “cn=Administrators,ou=RTFM Groups,ou=Groups,ou=sysops,dc=test_domain,dc=local” 
             “cn=User Admin,ou=RTFM Groups,ou=Groups,ou=sysops,dc=test_domain,dc=local”     
             “cn=Group Admin,ou=RTFM Groups,ou=Groups,ou=sysops,dc=test_domain,dc=local”    
@@ -50,62 +50,6 @@ Describe "test_domain.Domain objects" {
             it "has a Group named: $Group" {
                 
                 Get-ADObject $Group | Should Not BeNullOrEmpty
-            }
-        }
-    }
-
-    context "User: SysAdmin" {
-        
-        it "has a user account named SysAdmin" {
-                   
-            Get-ADUser SysAdmin | Should Not BeNullOrEmpty
-        }
-
-        it "is in the correct OU" {
-
-            $User = Get-ADUser SysAdmin
-            $User.DistinguishedName | Should Be "CN=SysAdmin,ou=RTFM Users,ou=Users,ou=sysops,DC=test_domain,DC=local"
-        }
-
-        it "is enabled" {
-
-            $User = Get-ADUser SysAdmin -Properties Enabled
-            $User.Enabled | Should Be $true
-        }
-
-         it "password set to expire" {
-            
-            $User = Get-ADUser SysAdmin -Properties PasswordNeverExpires
-            $User.PasswordNeverExpires | Should Be $false
-        }
-
-        it "has a first name" {
-            
-            $User = Get-ADUser SysAdmin -Properties GivenName
-            $User.GivenName | Should Be "SysAdmin"
-        }
-
-        it "has a last name" {
-            
-            $User = Get-ADUser SysAdmin -Properties Surname
-            $User.Surname | Should Be "USER"
-        }
-
-        $GroupMembership = (Get-ADUser SysAdmin | Get-ADPrincipalGroupMembership).name
-
-        $RequiredGroups = @(
-            "Administrators",
-            "RTFMUsersGroup",
-            "AdminSec",
-            "FTPSec",
-            "ReportSec"
-        )
-
-        # Check for every group
-        foreach($group in $RequiredGroups)
-        {
-            it "is a member of '$group'" {                
-                ($GroupMembership -eq $group) | Should Be $true
             }
         }
     }
@@ -135,7 +79,56 @@ Describe "test_domain.Domain objects" {
             $User.PasswordNeverExpires | Should Be $true
         }    
     }
+   
+    context "User: SysAdmin" {
+        
+        it "has a user account named SysAdmin" {
+                   
+            Get-ADUser SysAdmin | Should Not BeNullOrEmpty
+        }
 
+        it "is in the correct OU" {
+
+            $User = Get-ADUser SysAdmin
+            $User.DistinguishedName | 
+                Should Be "CN=SysAdmin,ou=RTFM Users,ou=Users,ou=sysops,DC=test_domain,DC=local"
+        }
+
+        $Properties = @{
+            PasswordNeverExpires = $false
+            GivenName            = 'SysAdmin'
+            Surname              = 'User'
+            Enabled              = $true
+        }
+        
+        foreach($key in $Properties.Keys)
+        {
+            it "has $key set to '$($Properties.$key)'" {
+                
+                $User = Get-ADUser SysAdmin -Properties $key
+                $User.$key | Should Be $Properties.$key
+            }
+        }
+
+        $GroupMembership = (Get-ADUser SysAdmin | Get-ADPrincipalGroupMembership).name
+
+        $RequiredGroups = @(
+            "Administrators",
+            "RTFMUsersGroup",
+            "AdminSec",
+            "FTPSec",
+            "ReportSec"
+        )
+
+        # Check for every group
+        foreach($group in $RequiredGroups)
+        {
+            it "is a member of '$group'" {                
+                ($GroupMembership -eq $group) | Should Be $true
+            }
+        }
+    }
+    
     context "User: Administrator" {
 
         it "has a user account named Administrator" {
@@ -160,12 +153,13 @@ Describe "test_domain.Domain objects" {
 
         $OUPath = "AD:\OU=sysops,DC=test_domain,DC=local"
 
-        it "has AD Admin rights delegated" {
+        it "has 'AD Admin' rights delegated" {
             (Get-Acl -Path $OUPath).Access | 
                 where IdentityReference -eq "test_domain\AD Admin" | 
                 Should Not BeNullOrEmpty
         }
 
+        # start http://www.selfadsi.org/deep-inside/ad-security-descriptors.htm
         $RequiredDelegation = @(
             @{
                 ActiveDirectoryRights = "GenericAll"
@@ -220,7 +214,9 @@ Describe "test_domain.Domain objects" {
             foreach($key in $delegation.keys)
             {
                 it "$key = $($delegation.$key)" {
-                   $AccessList = $AccessList | Where-Object -Property $key -EQ -Value $delegation.$key
+
+                   $AccessList = $AccessList | 
+                        Where-Object -Property $key -EQ -Value $delegation.$key
                    $AccessList | Should Not BeNullOrEmpty
                 }
             }

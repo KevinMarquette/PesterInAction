@@ -5,17 +5,29 @@ describe "System and Pre-Requirements"{
     context "Features" {
 
         $RequiredFeatures = @(
-            "Wow64-Support",
-            "Powershell",
-            "RSAT-AD-PowerShell",
-            "RSAT-ADDS-Tools",
-            "RSAT-DHCP",
-            "RSAT-DNS-Server",
-            "GPMC",
-            "FS-FileServer",
-            "NET-Framework-Core",
-            "NET-Framework-45-Core",
-            "Windows-Server-Backup"
+            "FS-FileServer"
+            "Storage-Services"
+            "Web-Default-Doc"
+            "Web-Dir-Browsing"
+            "Web-Http-Errors"
+            "Web-Static-Content"
+            "Web-Http-Logging"
+            "Web-Stat-Compression"
+            "Web-Filtering"
+            "Web-Net-Ext45"
+            "Web-Asp-Net45"
+            "Web-ISAPI-Ext"
+            "Web-ISAPI-Filter"
+            "Web-Mgmt-Console"
+            "NET-Framework-Core"
+            "NET-Framework-45-Core"
+            "NET-Framework-45-ASPNET"
+            "RSAT-AD-PowerShell"
+            "FS-SMB1"
+            "PowerShell"
+            "PowerShell-V2"
+            "PowerShell-ISE"
+            "WoW64-Support"
         )
 
         $InstalledFeatures = Get-WindowsFeature | where Installed

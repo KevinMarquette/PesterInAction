@@ -3,7 +3,7 @@ $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(".Tests.", ".")
 $file = Get-ChildItem "$here\$sut"
 
-Describe $file.BaseName -Tags Unit {
+Describe "Create desktop shortcut script" {
 
     It "is valid Powershell (Has no script errors)" {
 

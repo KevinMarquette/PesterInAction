@@ -26,7 +26,7 @@ Describe "GenericTest" {
 
     $actual = "Actual value"
 
-    It "Test value" {
+    It "has the value 'Actual value'" {
         
         $actual | Should Be "Actual value"
     }
@@ -123,7 +123,7 @@ Invoke-Pester "$path\$name.Tests.ps1"
 #endregion
 
 #region Other examples
-ise '.\6 Other\System.Tests.ps1'
+ise '.\6 Other\System.Tests.ps1' 
 ise '.\6 Other\SQL.System.Tests.ps1'
 ise '.\6 Other\ActiveDirectory.DC.System.Tests.ps1'
 ise '.\6 Other\My-DSC.Tests.ps1'

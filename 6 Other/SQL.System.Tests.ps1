@@ -24,10 +24,9 @@ describe "SQL Configuration" {
             {throw "Not yet implemented"} | Should Not Throw
         }
 
-        it "Running SQL Server 2012 10.0.5058.0" {
+        it "Running SQL Server 2012 11.0.5058" {
         
             $results = Invoke-Sqlcmd "Select @@Version"
-            # 11.0.5058.0 or 11.2.5058
             $results.Column1 | Should match "11.0.5058"
         }
 
@@ -55,7 +54,7 @@ describe "SQL Configuration" {
 
         It "is installed" {
 
-            $SSRS = Get-WmiObject win32_service | 
+            $SSRS = Get-Service | 
                 where name -eq "reportServer"
 
             $SSRS | Should Not BeNullOrEmpty
