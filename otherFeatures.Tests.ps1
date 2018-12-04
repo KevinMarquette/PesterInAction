@@ -78,6 +78,44 @@ Describe "More before/after actions" {
     It 'Second It' {Write-Host 'Execute Second It'}
 }
 
+
+# TestCases
+$testCases = @(
+    @{Alias = 'ps';  Command='Get-Process'}
+    @{Alias = 'gm';  Command='Get-Member'}
+    @{Alias = 'cls'; Command='Clear-Host'}
+)
+
+Describe "ForEach" {
+    foreach($node in $testCases)
+    {
+        It ('Alias {0} is for command {1}' -f $node.Alias,$node.Command) {
+            $result = Get-Alias $node.Alias
+            $result.Definition | Should -Be $node.Command
+        }
+    }
+}
+
+Describe "Testcases" {
+    
+    It 'Alias <Alias> is for command <Command>' -TestCases $testCases {
+        param($Alias,$Command)
+        $result = Get-Alias $Alias
+        $result.Definition | Should -Be $Command
+    }
+}
+
+
+# InModuleScope
+
+InModuleScope -ModuleName Pester {
+    Describe "Inside Pester" {
+        It "finds the list of safe commands" {
+            $SafeCommands | Should -Not -BeNullOrEmpty
+        }
+    }
+}
+
 # Mock: replaces a powershell command with alternate functionality
 Describe "Mock" {
     
@@ -92,7 +130,3 @@ Describe "Mock" {
         Assert-MockCalled Get-Date -Times 2
     }
 }
-
-
-
-
