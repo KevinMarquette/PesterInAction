@@ -18,7 +18,7 @@ Describe "Module: $module" -Tags Unit {
         
         It "Has a root module file ($module.psm1)" {        
             
-            "$here\$module.psm1" | Should Exist
+            "$here\$module.psm1" | Should -Exist
         }
 
         It "Is valid Powershell (Has no script errors)" {
@@ -26,28 +26,28 @@ Describe "Module: $module" -Tags Unit {
             $contents = Get-Content -Path "$here\$module.psm1" -ErrorAction SilentlyContinue
             $errors = $null
             $null = [System.Management.Automation.PSParser]::Tokenize($contents, [ref]$errors)
-            $errors.Count | Should Be 0
+            $errors | Should -HaveCount 0
         }
 
         It "Has a manifest file ($module.psd1)" {
             
-            "$here\$module.psd1" | Should Exist
+            "$here\$module.psd1" | Should -Exist
         }
 
         It "Contains a root module path in the manifest (RootModule = '.\$module.psm1')" {
             
-            "$here\$module.psd1" | Should Exist
-            "$here\$module.psd1" | Should Contain "\.\\$module.psm1"
+            "$here\$module.psd1" | Should -Exist
+            "$here\$module.psd1" | Should -FileContentMatch "\.\\$module.psm1"
         }
 
         It "Has a functions folder" {        
             
-            "$here\functions" | Should Exist
+            "$here\functions" | Should -Exist
         }
 
         It "Has functions in the functions folder" {        
             
-            "$here\functions\*.ps1" | Should Exist
+            "$here\functions\*.ps1" | Should -Exist
         }
     }
 
@@ -62,30 +62,30 @@ Describe "Module: $module" -Tags Unit {
         
             It "Has a Pester test" {
 
-                $CurrentFunction.FullName.Replace(".ps1",".Tests.ps1") | should exist
+                $CurrentFunction.FullName.Replace(".ps1",".Tests.ps1") | Should -Exist
             }
 
             It "Has show-help comment block" {
 
-                $CurrentFunction.FullName | should contain '<#'
-                $CurrentFunction.FullName | should contain '#>'
+                $CurrentFunction.FullName | Should -FileContentMatch '<#'
+                $CurrentFunction.FullName | Should -FileContentMatch '#>'
             }
 
             It "Has show-help comment block has a synopsis" {
 
-                $CurrentFunction.FullName | should contain '\.SYNOPSIS'
+                $CurrentFunction.FullName | should -FileContentMatch '\.SYNOPSIS'
             }
 
             It "Has show-help comment block has an example" {
 
-                $CurrentFunction.FullName | should contain '\.EXAMPLE'
+                $CurrentFunction.FullName | should -FileContentMatch '\.EXAMPLE'
             }
 
             It "Is an advanced function" {
 
-                $CurrentFunction.FullName | should contain 'function'
-                $CurrentFunction.FullName | should contain 'cmdletbinding'
-                $CurrentFunction.FullName | should contain 'param'
+                $CurrentFunction.FullName | should -FileContentMatch 'function'
+                $CurrentFunction.FullName | should -FileContentMatch 'cmdletbinding'
+                $CurrentFunction.FullName | should -FileContentMatch 'param'
             }
 
             It "Is valid Powershell (Has no script errors)" {
@@ -93,7 +93,7 @@ Describe "Module: $module" -Tags Unit {
                 $contents = Get-Content -Path $CurrentFunction.FullName -ErrorAction Stop
                 $errors = $null
                 $null = [System.Management.Automation.PSParser]::Tokenize($contents, [ref]$errors)
-                $errors.Count | Should Be 0
+                $errors | Should -HaveCount 0
             }
         }
     }

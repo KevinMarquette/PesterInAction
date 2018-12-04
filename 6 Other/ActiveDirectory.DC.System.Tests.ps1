@@ -24,7 +24,7 @@ Describe "test_domain.Domain objects" {
         {
             it "has an OU named: $OU" {
                 
-                Get-ADObject $OU | Should Not BeNullOrEmpty
+                Get-ADObject $OU | Should -Not -BeNullOrEmpty
             }
         }
     }
@@ -32,12 +32,12 @@ Describe "test_domain.Domain objects" {
     context "Groups" {
 
         $ADGroups = @(
-            “cn=RTMFUsersGroup,ou=Groups,ou=sysops,dc=test_domain,dc=local” 
-            “cn=Administrators,ou=RTFM Groups,ou=Groups,ou=sysops,dc=test_domain,dc=local” 
-            “cn=User Admin,ou=RTFM Groups,ou=Groups,ou=sysops,dc=test_domain,dc=local”     
-            “cn=Group Admin,ou=RTFM Groups,ou=Groups,ou=sysops,dc=test_domain,dc=local”    
-            “cn=Report Admin,ou=RTFM Groups,ou=Groups,ou=sysops,dc=test_domain,dc=local”   
-            “cn=Template Admin,ou=RTFM Groups,ou=Groups,ou=sysops,dc=test_domain,dc=local” 
+            "cn=RTMFUsersGroup,ou=Groups,ou=sysops,dc=test_domain,dc=local" 
+            "cn=Administrators,ou=RTFM Groups,ou=Groups,ou=sysops,dc=test_domain,dc=local" 
+            "cn=User Admin,ou=RTFM Groups,ou=Groups,ou=sysops,dc=test_domain,dc=local"     
+            "cn=Group Admin,ou=RTFM Groups,ou=Groups,ou=sysops,dc=test_domain,dc=local"    
+            "cn=Report Admin,ou=RTFM Groups,ou=Groups,ou=sysops,dc=test_domain,dc=local"   
+            "cn=Template Admin,ou=RTFM Groups,ou=Groups,ou=sysops,dc=test_domain,dc=local" 
             "cn=AdminSec,ou=RTFM Groups,ou=Groups,ou=sysops,dc=test_domain,dc=local"
             "cn=FtpSec,ou=RTFM Groups,ou=Groups,ou=sysops,dc=test_domain,dc=local"
             "cn=ReportSec,ou=RTFM Groups,ou=Groups,ou=sysops,dc=test_domain,dc=local"
@@ -49,7 +49,7 @@ Describe "test_domain.Domain objects" {
         {
             it "has a Group named: $Group" {
                 
-                Get-ADObject $Group | Should Not BeNullOrEmpty
+                Get-ADObject $Group | Should -Not -BeNullOrEmpty
             }
         }
     }
@@ -80,7 +80,7 @@ Describe "test_domain.Domain objects" {
         }    
     }
    
-    context "User: SysAdmin" {
+    Context "User: SysAdmin" {
         
         it "has a user account named SysAdmin" {
                    
@@ -91,7 +91,7 @@ Describe "test_domain.Domain objects" {
 
             $User = Get-ADUser SysAdmin
             $User.DistinguishedName | 
-                Should Be "CN=SysAdmin,ou=RTFM Users,ou=Users,ou=sysops,DC=test_domain,DC=local"
+                Should -Be "CN=SysAdmin,ou=RTFM Users,ou=Users,ou=sysops,DC=test_domain,DC=local"
         }
 
         $Properties = @{
@@ -106,7 +106,7 @@ Describe "test_domain.Domain objects" {
             it "has $key set to '$($Properties.$key)'" {
                 
                 $User = Get-ADUser SysAdmin -Properties $key
-                $User.$key | Should Be $Properties.$key
+                $User.$key | Should -Be $Properties.$key
             }
         }
 
@@ -124,7 +124,7 @@ Describe "test_domain.Domain objects" {
         foreach($group in $RequiredGroups)
         {
             it "is a member of '$group'" {                
-                ($GroupMembership -eq $group) | Should Be $true
+                ($GroupMembership -eq $group) | Should -Be $true
             }
         }
     }
@@ -133,19 +133,19 @@ Describe "test_domain.Domain objects" {
 
         it "has a user account named Administrator" {
                    
-            Get-ADUser Administrator | Should Not BeNullOrEmpty
+            Get-ADUser Administrator | Should -Not -BeNullOrEmpty
         }
 
         it "is in the correct OU" {
 
             $User = Get-ADUser Administrator
-            $User.DistinguishedName | Should Be "cn=Administrator,cn=Users,DC=test_domain,DC=local"
+            $User.DistinguishedName | Should -Be "cn=Administrator,cn=Users,DC=test_domain,DC=local"
         }
 
         it "is enabled" {
 
             $User = Get-ADUser Administrator -Properties Enabled
-            $User.Enabled | Should Be $true
+            $User.Enabled | Should -BeTrue
         }  
     }
  
@@ -156,7 +156,7 @@ Describe "test_domain.Domain objects" {
         it "has 'AD Admin' rights delegated" {
             (Get-Acl -Path $OUPath).Access | 
                 where IdentityReference -eq "test_domain\AD Admin" | 
-                Should Not BeNullOrEmpty
+                Should -Not -BeNullOrEmpty
         }
 
         # start http://www.selfadsi.org/deep-inside/ad-security-descriptors.htm
@@ -217,7 +217,7 @@ Describe "test_domain.Domain objects" {
 
                    $AccessList = $AccessList | 
                         Where-Object -Property $key -EQ -Value $delegation.$key
-                   $AccessList | Should Not BeNullOrEmpty
+                   $AccessList | Should -Not -BeNullOrEmpty
                 }
             }
         }
@@ -241,7 +241,7 @@ Describe "Roles and features" {
     foreach($feature in $RequiredFeatures)
     {
         it "Has feature installed: $feature" -Pending {
-            $InstalledFeatures.name -eq $feature | Should Not BeNullOrEmpty
+            $InstalledFeatures.name -eq $feature | Should -Not -BeNullOrEmpty
         }
     }
 }

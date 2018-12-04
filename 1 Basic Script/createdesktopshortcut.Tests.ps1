@@ -10,7 +10,7 @@ Describe "Create desktop shortcut script" {
         $contents = Get-Content -Path $file -ErrorAction Stop
         $errors = $null
         $null = [System.Management.Automation.PSParser]::Tokenize($contents, [ref]$errors)
-        $errors.Count | Should Be 0
+        $errors | Should -HaveCount 0
     }
 
     It "Creates a shortcut on the desktop" {
@@ -18,6 +18,6 @@ Describe "Create desktop shortcut script" {
         & $file.FullName
 
         $path = "$env:USERPROFILE\Desktop\Notepad.lnk"
-        $path | Should Exist
+        $path | Should -Exist
     }
 }

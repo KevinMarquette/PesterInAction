@@ -1,51 +1,60 @@
 break; # just a demo
 
-describe "SQL Configuration" {
-    pushd
-    context "General Config" {
+Describe "SQL Configuration" {
+    BeforeAll{
+        Push-Location
+    }
+
+    Context "General Config" {
 
         it "Has a D:\SQLData folder" {
-            Test-Path "D:\SQLData" | Should be $true
+            Test-Path "D:\SQLData" | 
+                Should -BeTrue
         }
 
         it "Has a L:\SQLLogs folder" {
-            Test-Path "L:\SQLLogs" | Should be $true
+            Test-Path "L:\SQLLogs" | 
+                Should -BeTrue
         }
 
         it "Has SQL Server installed" {
-            Get-Service mssqlserver* | Should Not BeNullOrEmpty
+            Get-Service mssqlserver* | 
+                Should -Not -BeNullOrEmpty
         }
 
         it "Has SQL Server running" {
-            (Get-Service mssqlserver*).Status | Should Be "Running"
+            (Get-Service mssqlserver*).Status | 
+                Should -Be "Running"
         }
 
         it "Has correct SA password" -Pending {
-            {throw "Not yet implemented"} | Should Not Throw
+            {throw "Not yet implemented"} | 
+                Should -Not -Throw
         }
 
         it "Running SQL Server 2012 11.0.5058" {
         
             $results = Invoke-Sqlcmd "Select @@Version"
-            $results.Column1 | Should match "11.0.5058"
+            $results.Column1 | 
+                Should -Match "11.0.5058"
         }
 
         It "@@ServerName matches hostname" {
             $name = Invoke-SQLCMD "SELECT @@Servername as Name" | % name
-            $name | Should be $env:COMPUTERNAME
+            $name | Should -Be $env:COMPUTERNAME
         }
     }
 
-    context "SQL Accounts/Access" {
+    Context "SQL Accounts/Access" {
         
         It "test_domain\SQL Users have authentication in SQL" {
             Invoke-SQLCMD "SELECT Name FROM sys.server_principals WHERE name = 'test_domain\SQL Users'" | 
-                Should Not BeNullOrEmpty
+                Should -Not -BeNullOrEmpty
         }
 
         It "ReportUser has authentication in SQL" {
             Invoke-SQLCMD "SELECT Name FROM sys.server_principals WHERE name = 'ReportUser'" | 
-                Should Not BeNullOrEmpty
+                Should -Not -BeNullOrEmpty
         }
     }
 
@@ -57,7 +66,7 @@ describe "SQL Configuration" {
             $SSRS = Get-Service | 
                 where name -eq "reportServer"
 
-            $SSRS | Should Not BeNullOrEmpty
+            $SSRS | Should -Not -BeNullOrEmpty
         }
 
         It "SSRS starts as network service" {      
@@ -65,13 +74,13 @@ describe "SQL Configuration" {
             $SSRS = Get-WmiObject win32_service  | 
                 where name -eq "reportServer"
 
-            $SSRS.StartName | Should Be "NT AUTHORITY\NETWORKSERVICE"
+            $SSRS.StartName | Should -Be "NT AUTHORITY\NETWORKSERVICE"
         }        
 
         It "Network Service has authentication in SQL" {
 
             Invoke-SQLCMD "SELECT name FROM sys.server_principals WHERE name = 'NT AUTHORITY\NETWORK SERVICE'" | 
-                Should Not BeNullOrEmpty
+                Should -Not -BeNullOrEmpty
         }
 
         It "Network Service has RSExecRole on ReportServer database" {
@@ -86,8 +95,11 @@ describe "SQL Configuration" {
                     WHERE pp.name = 'RSExecRole' AND p.name = 'NT AUTHORITY\NETWORK SERVICE'
 "@
             Invoke-SQLCMD $SQL -Database ReportServer | 
-                Should Not BeNullOrEmpty
+                Should -Not -BeNullOrEmpty
         }
     }
-    popd
+
+    AfterAll {
+        Pop-Location
+    }
 }

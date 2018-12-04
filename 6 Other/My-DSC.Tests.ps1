@@ -14,13 +14,16 @@ Describe "DSCResources located in $PSScriptRoot\DSCResources" -Tags Unit {
 
             It "Is loaded correctly" {
 
-                $LoadedResources | ?{$_.name -eq $Resource} | Should Not BeNullOrEmpty
+                $LoadedResources | 
+                    Where-Object {$_.name -eq $Resource} | 
+                    Should -Not -BeNullOrEmpty
             }
 
 
             It "Has a pester test" {
 
-                Resolve-Path ($Resource.fullname + "\*.tests.ps1") | should exist
+                Resolve-Path ($Resource.fullname + "\*.tests.ps1") | 
+                    Should -Exist
             }
 
             # Identify standard vs composite resources
@@ -31,23 +34,23 @@ Describe "DSCResources located in $PSScriptRoot\DSCResources" -Tags Unit {
                 It "Has a $Resource.schema.mof" {
                     
                     ($Resource.fullname + "\$Resource.schema.mof") | 
-                        should exist
+                        Should -Exist
                 }
 
                 It "Has a $Resource.psm1" {
                     
                     ($Resource.fullname + "\$Resource.psm1") | 
-                        should exist
+                        Should -Exist
                 }
 
                 It "Passes Test-xDscSchema *.schema.mof" {
                     Test-xDscSchema ($Resource.fullname + "\$Resource.schema.mof") | 
-                        should be true
+                        Should -BeTrue
                 }
 
                 It "Passes Test-xDscResource" {
                     Test-xDscResource $Resource.fullname | 
-                        should be true
+                        Should -BeTrue
                 }
             }
             else
@@ -57,26 +60,26 @@ Describe "DSCResources located in $PSScriptRoot\DSCResources" -Tags Unit {
                 It "Has a $Resource.schema.psm1" {
                     
                     ($Resource.fullname + "\$Resource.schema.psm1") | 
-                        should exist
+                        Should -Exist
                 }
 
                 It "Has a $Resource.psd1" {
                     
                     ($Resource.fullname + "\$Resource.psd1") | 
-                        should exist
+                        Should -Exist
                 }
 
                 It "Has a psd1 that loads the schema.psm1" {
 
                     ($Resource.fullname + "\$Resource.psd1") | 
-                        should contain "$Resource.schema.psm1"
+                        Should -FileContentMatch "$Resource.schema.psm1"
                 }
 
                 It "dot-sourcing should not throw an error" {
 
                     $path = ($Resource.fullname + "\$Resource.schema.psm1")
                     { Invoke-expression (Get-Content $path -raw) } | 
-                        should not throw
+                        Should -Not -Throw
                 }
             }
         }

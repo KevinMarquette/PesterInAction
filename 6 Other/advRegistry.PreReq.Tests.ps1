@@ -188,7 +188,7 @@ Describe "registry settings Pre-Requirements" {
         context "$node" {
             
             it "has this key: '$($RegKey.Key)'" {
-                Test-Path $RegKey.Key | Should Be $true
+                Test-Path $RegKey.Key | Should -BeTrue
             }
 
             if($RegKey.ValueName)
@@ -198,7 +198,7 @@ Describe "registry settings Pre-Requirements" {
                     Get-Item  $RegKey.Key -ea Ignore | 
                         Select-Object -ExpandProperty Property | 
                         ?{$_ -eq $RegKey.ValueName} | 
-                        Should Not BeNullOrEmpty
+                        Should -Not -BeNullOrEmpty
                 }
 
                 it "Property $($RegKey.ValueName) should be $($RegKey.ValueData)" {
@@ -207,11 +207,11 @@ Describe "registry settings Pre-Requirements" {
                     
                     if($RegKey.Hex)
                     {
-                        $value | Should Be ([Convert]::ToInt32($RegKey.ValueData,16))
+                        $value | Should -Be ([Convert]::ToInt32($RegKey.ValueData,16))
                     }
                     else
                     {
-                        $value | Should Be $RegKey.ValueData
+                        $value | Should -Be $RegKey.ValueData
                     }
                 }
             }

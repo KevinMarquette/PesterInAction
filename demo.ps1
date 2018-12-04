@@ -1,7 +1,7 @@
 ﻿break;  # F5 trap
 #region Demo Prep
 
-$root = "C:\Users\kevin.marquette\Documents\kevmar\PesterInAction" # My working directory
+$root = "C:\workspace\PesterInAction" # My working directory
 pushd $root
 
 function prompt
@@ -13,8 +13,6 @@ function prompt
 & '.\1 Basic Script\RemoveDesktopShortcut.ps1'
 
 Clear-Host
-
-& '.\Pester in Action.ppsx'
 
 #endregion
 
@@ -28,42 +26,42 @@ Describe "GenericTest" {
 
     It "has the value 'Actual value'" {
         
-        $actual | Should Be "Actual value"
+        $actual | Should -Be "Actual value"
     }
 }
 
 
 # Should Examples
-ise .\should.Tests.ps1
+code .\should.Tests.ps1
 Invoke-Pester .\should.Tests.ps1
 
 
 
 # Demonstrate Other Features of Pester
-ise .\otherFeatures.Tests.ps1
+code .\otherFeatures.Tests.ps1
 Invoke-Pester .\otherFeatures.Tests.ps1
 
 #endregion
 
 #region Show a basic script and Pester test
 # & '.\1 Basic Script\RemoveDesktopShortcut.ps1'
-ise '.\1 Basic Script\createdesktopshortcut.ps1'
-ise '.\1 Basic Script\createdesktopshortcut.Tests.ps1'
+code '.\1 Basic Script\createdesktopshortcut.ps1'
+code '.\1 Basic Script\createdesktopshortcut.Tests.ps1'
 
 Invoke-Pester '.\1 Basic Script\createdesktopshortcut.Tests.ps1'
 
 # Show an advanced script and Pester tests
-ise '.\2 Advanced Script\NewShortcut.ps1'
-ise '.\2 Advanced Script\NewShortcut.Tests.ps1'
+code '.\2 Advanced Script\NewShortcut.ps1'
+code '.\2 Advanced Script\NewShortcut.Tests.ps1'
 Invoke-Pester '.\2 Advanced Script\NewShortcut.Tests.ps1'
 
 
 # Show an advanced function
-ise '.\3 Advanced Functions\New-Shortcut.ps1'
-ise '.\3 Advanced Functions\New-Shortcut.Tests.ps1'
+code '.\3 Advanced Functions\New-Shortcut.ps1'
+code '.\3 Advanced Functions\New-Shortcut.Tests.ps1'
 Invoke-Pester '.\3 Advanced Functions\New-Shortcut.Tests.ps1'
 
-ise '.\3 Advanced Functions\Get-Shortcut.Tests.ps1'
+code '.\3 Advanced Functions\Get-Shortcut.Tests.ps1'
 Invoke-Pester '.\3 Advanced Functions\Get-Shortcut.Tests.ps1'
 
 
@@ -83,9 +81,9 @@ Demo
         New-Shortcut.Tests.ps1 # Pester Test
 #>
 Start '.\4 Module\Demo'
-ise '.\4 Module\Demo\Demo.psm1'
-ise '.\4 Module\Demo\Demo.psd1'
-ise '.\4 Module\Demo\Demo.Tests.ps1'
+code '.\4 Module\Demo\Demo.psm1'
+code '.\4 Module\Demo\Demo.psd1'
+code '.\4 Module\Demo\Demo.Tests.ps1'
 Invoke-Pester '.\4 Module\Demo\Demo.Tests.ps1'
 
 #endregion
@@ -109,8 +107,8 @@ Invoke-Pester "$path\$name.Tests.ps1"
 # Create a function file
 Set-Content -Value '' -Path "$path\functions\test-item.ps1"
 New-Fixture -Path "$path\functions" -Name 'test-item'
-ise "$path\functions\test-item.Tests.ps1"
-ise "$path\functions\test-item.ps1"
+code "$path\functions\test-item.Tests.ps1"
+code "$path\functions\test-item.ps1"
 Invoke-Pester "$path\functions"
 Invoke-Pester "$path\$name.Tests.ps1"
 
@@ -123,10 +121,10 @@ Invoke-Pester "$path\$name.Tests.ps1"
 #endregion
 
 #region Other examples
-ise '.\6 Other\System.Tests.ps1' 
-ise '.\6 Other\SQL.System.Tests.ps1'
-ise '.\6 Other\ActiveDirectory.DC.System.Tests.ps1'
-ise '.\6 Other\My-DSC.Tests.ps1'
-ise '.\6 Other\advRegistry.PreReq.Tests.ps1'
+code '.\6 Other\System.Tests.ps1' 
+code '.\6 Other\SQL.System.Tests.ps1'
+code '.\6 Other\ActiveDirectory.DC.System.Tests.ps1'
+code '.\6 Other\My-DSC.Tests.ps1'
+code '.\6 Other\advRegistry.PreReq.Tests.ps1'
 
 #endregion
