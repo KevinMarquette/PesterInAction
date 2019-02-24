@@ -32,7 +32,7 @@ Describe "-Because" {
 
 
 
-# TestDrive: teporary storage location for your tests
+# TestDrive: temporary storage location for your tests
 # $TestDrive is full path to the TestDrive: Drive
 Describe "TestDrive" {
 
@@ -47,19 +47,16 @@ Describe "TestDrive" {
 # BeforeEach
 
 Describe "BeforeEach" {
-
     BeforeEach {
         $path = "TestDrive:\Test.txt"
         Set-Content -Value "Temp file" -Path $path
     }
-
     It "change in value" {
         $path | Should -Exist
         $path | Should -FileContentMatch "Temp file"
         Set-Content -Value "different value" -Path $path
         $path | Should -FileContentMatch "different value"
     }
-
     It "Contains value" {
         $path | Should -Exist
         $path | Should -FileContentMatch "Temp"
@@ -84,6 +81,7 @@ $testCases = @(
     @{Alias = 'ps';  Command='Get-Process'}
     @{Alias = 'gm';  Command='Get-Member'}
     @{Alias = 'cls'; Command='Clear-Host'}
+    @{Alias = 'wmi'; Command='Get-WmiObject'}
 )
 
 Describe "ForEach" {

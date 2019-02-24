@@ -33,6 +33,7 @@ Describe "Should operations" {
 
     It 'Should Match' {
         "I am a value" | Should -Match "I Am" # Test will pass
+        "I am a value" | Should -Match '^I.*value$' # Test will pass
         # "I am a value" | Should -Match "I am a bad person" # Test will fail
     } 
 
@@ -46,6 +47,7 @@ Describe "Should operations" {
         # { $foo = 1 } | Should -Throw # Test will fail
         # { foo } | Should -Not -Throw # Test will fail
         { $foo = 1 } | Should -Not -Throw # Test will pass
+        $foo = 1 # correct way to handle this scenario
         { throw "This is a test" } | Should -Throw "This is a test" # Test will pass
         # { throw "bar" } | Show -Throw "This is a test" # Test will fail
     }
