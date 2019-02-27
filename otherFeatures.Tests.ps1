@@ -22,7 +22,7 @@ Describe "-Because" {
     }
 }
 
-Describe "-Because" {
+Describe "-Because random" {
     It "Shows -Because in action" {
         Random -Maximum 2 | Should -Be 0 -Because 'Some assumption'
         Random -Maximum 2 | Should -Be 0 -Because 'Main test case'

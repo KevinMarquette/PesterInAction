@@ -142,10 +142,10 @@ Describe "test_domain.Domain objects" {
             $User.DistinguishedName | Should -Be "cn=Administrator,cn=Users,DC=test_domain,DC=local"
         }
 
-        it "is enabled" {
+        it "is disabled" {
 
             $User = Get-ADUser Administrator -Properties Enabled
-            $User.Enabled | Should -BeTrue
+            $User.Enabled | Should -BeFalse
         }  
     }
  

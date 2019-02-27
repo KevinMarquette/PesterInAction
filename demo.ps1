@@ -41,6 +41,7 @@ Invoke-Pester .\should.Tests.ps1
 code .\otherFeatures.Tests.ps1
 Invoke-Pester .\otherFeatures.Tests.ps1
 
+code .\relatedmodules.ps1
 #endregion
 
 #region Show a basic script and Pester test
@@ -68,6 +69,8 @@ Invoke-Pester '.\3 Advanced Functions\Get-Shortcut.Tests.ps1'
 #endregion
 
 #region Show a module
+code C:\ldx\LDXFluxLoop
+
 <#
 Demo
 │   Demo.psd1       # module manifest
@@ -124,7 +127,48 @@ Invoke-Pester "$path\$name.Tests.ps1"
 code '.\6 Other\System.Tests.ps1' 
 code '.\6 Other\SQL.System.Tests.ps1'
 code '.\6 Other\ActiveDirectory.DC.System.Tests.ps1'
-code '.\6 Other\My-DSC.Tests.ps1'
-code '.\6 Other\advRegistry.PreReq.Tests.ps1'
 
 #endregion
+
+
+#region OperationalValidation
+$computerName = Get-LDServer -Component CLP-Core -Environment DV1 | 
+    Select -First 1 -ExpandProperty ComputerName
+
+C:\ldx\TaskRunner\Tests\ServerHealth.tests.ps1 -ComputerName $computerName
+C:\ldx\TaskRunner\Tests\ApplicationHealth.tests.ps1 -ComputerName $ComputerName
+C:\ldx\TaskRunner\Tests\F5.tests.ps1 -Component CLP-core -Environment DV1
+C:\ldx\TaskRunner\Tests\DNS.tests.ps1 -Component CLP-Core -Environment DV1
+C:\ldx\TaskRunner\Tests\Credentials.tests.ps1 -CredentialName MLP-Core_DV1_CRED
+C:\ldx\TaskRunner\Tests\SQL.tests.ps1 -DatabaseComponent Database-CLP -Environment dv1
+
+code C:\ldx\TaskRunner\Tests\ServerHealth.tests.ps1
+code C:\ldx\TaskRunner\Tests\F5.tests.ps1
+code C:\ldx\TaskRunner\Tests
+
+# f5 tests results:
+# Example: TFSCheckinHandlerAPI
+start 'https://tfs/DevOps/TaskRunner/_release?releaseId=4083&_a=release-contribution-tab-ms.vss-test-web.test-result-in-release-management'
+
+
+# DevOps tests
+# Database, F5, PostRelease Validation examples
+code DeployScriptLog\deploy-ABC.log
+
+# A closer look at F5 Commands
+$config = Get-LDF5Config -Component CLP-Core -Environment DV1
+$config[0]
+$config[0] | Test-LDF5Config -Verbose
+
+$config[0].Test()
+$config[0].GetTestResult()
+
+$config | Test-LDF5Config -Verbose
+
+code C:\ldx\ldf5\LDF5\Public\Test-LDF5Config.ps1
+code C:\ldx\ldf5\LDF5\Classes\HealthMonitor.ps1
+code C:\ldx\ldf5
+
+#endregion
+
+
