@@ -30,7 +30,8 @@ Describe "-Because random" {
     }
 }
 
-
+#Example
+C:\ldx\LDUtility\Tests\Select-Unique.Tests.ps1
 
 # TestDrive: temporary storage location for your tests
 # $TestDrive is full path to the TestDrive: Drive
@@ -43,6 +44,9 @@ Describe "TestDrive" {
         $path | Should -FileContentMatch "Temp"
     }
 }
+
+#Example
+code C:\ldx\LDUtility\Tests\Invoke-LDGit.Tests.ps1
 
 # BeforeEach
 
@@ -75,6 +79,9 @@ Describe "More before/after actions" {
     It 'Second It' {Write-Host 'Execute Second It'}
 }
 
+# Example
+code C:\ldx\LDUtility\Tests\Protect-Clipboard.Tests.ps1
+code C:\ldx\LDUtility\Tests\Unprotect-Clipboard.Tests.ps1
 
 # TestCases
 $testCases = @(
@@ -103,7 +110,9 @@ Describe "Testcases" {
     }
 }
 
-
+# Examples
+code C:\ldx\LDNetworking\Tests\Test-LDEndpoint.Tests.ps1
+code C:\ldx\LDXSet\Tests\Test-MDAppSetting.Tests.ps1
 # InModuleScope
 
 InModuleScope -ModuleName Pester {
@@ -113,6 +122,9 @@ InModuleScope -ModuleName Pester {
         }
     }
 }
+
+# Example
+code C:\ldx\LDAppSettings\Tests\Classes\ConfigTransforms\JsonConfigTransform.Tests.ps1
 
 # Mock: replaces a powershell command with alternate functionality
 Describe "Mock" {
@@ -128,3 +140,6 @@ Describe "Mock" {
         Assert-MockCalled Get-Date -Times 2
     }
 }
+
+# Example 
+code C:\ldx\LDUtility\Tests\Start-DevTask.Tests.ps1

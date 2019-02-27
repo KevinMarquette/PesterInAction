@@ -69,7 +69,16 @@ Invoke-Pester '.\3 Advanced Functions\Get-Shortcut.Tests.ps1'
 #endregion
 
 #region Show a module
+code C:\workspace\PSGraph
+code C:\workspace\PSGraph\BuildTasks\Pester.Task.ps1
+
+code C:\ldx\LDAppSettings
 code C:\ldx\LDXFluxLoop
+
+
+#code coverage
+code C:\ldx\LDTestFramework
+
 
 <#
 Demo
