@@ -101,6 +101,7 @@ Describe "ForEach" {
     }
 }
 
+# Built-in test case support
 Describe "Testcases" {
     
     It 'Alias <Alias> is for command <Command>' -TestCases $testCases {
@@ -113,8 +114,9 @@ Describe "Testcases" {
 # Examples
 code C:\ldx\LDNetworking\Tests\Test-LDEndpoint.Tests.ps1
 code C:\ldx\LDXSet\Tests\Test-MDAppSetting.Tests.ps1
-# InModuleScope
 
+
+# InModuleScope
 InModuleScope -ModuleName Pester {
     Describe "Inside Pester" {
         It "finds the list of safe commands" {
@@ -125,6 +127,7 @@ InModuleScope -ModuleName Pester {
 
 # Example
 code C:\ldx\LDAppSettings\Tests\Classes\ConfigTransforms\JsonConfigTransform.Tests.ps1
+
 
 # Mock: replaces a powershell command with alternate functionality
 Describe "Mock" {

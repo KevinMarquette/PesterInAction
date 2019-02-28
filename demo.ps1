@@ -36,12 +36,10 @@ code .\should.Tests.ps1
 Invoke-Pester .\should.Tests.ps1
 
 
-
 # Demonstrate Other Features of Pester
 code .\otherFeatures.Tests.ps1
 Invoke-Pester .\otherFeatures.Tests.ps1
 
-code .\relatedmodules.ps1
 #endregion
 
 #region Show a basic script and Pester test
@@ -132,7 +130,7 @@ Invoke-Pester "$path\$name.Tests.ps1"
 
 #endregion
 
-#region Other examples
+#region Other OperationalValidation examples
 code '.\6 Other\System.Tests.ps1' 
 code '.\6 Other\SQL.System.Tests.ps1'
 code '.\6 Other\ActiveDirectory.DC.System.Tests.ps1'
@@ -140,7 +138,11 @@ code '.\6 Other\ActiveDirectory.DC.System.Tests.ps1'
 #endregion
 
 
-#region OperationalValidation
+# Show Pester ecosystem
+code .\relatedmodules.ps1
+
+
+#region More OperationalValidation
 $computerName = Get-LDServer -Component CLP-Core -Environment DV1 | 
     Select -First 1 -ExpandProperty ComputerName
 
@@ -174,9 +176,11 @@ $config[0].GetTestResult()
 
 $config | Test-LDF5Config -Verbose
 
+code C:\ldx\TaskRunner\Tests\F5.tests.ps1
 code C:\ldx\ldf5\LDF5\Public\Test-LDF5Config.ps1
 code C:\ldx\ldf5\LDF5\Classes\HealthMonitor.ps1
 code C:\ldx\ldf5
+
 
 #endregion
 

@@ -1,14 +1,13 @@
-<#
-.SYNOPSIS
-Creates a new shortcut
-.EXAMPLE
-New-Shortcut -Source app.exe -Destination "$env:Public\Desktop" -Name "Quick Launch"
-.EXAMPLE
- Get-ChildItem *.exe | New-Shortcut -Destination "$env:Public\Desktop"
-#>
-
 function New-Shortcut
 {
+    <#
+    .SYNOPSIS
+    Creates a new shortcut
+    .EXAMPLE
+    New-Shortcut -Source app.exe -Destination "$env:Public\Desktop" -Name "Quick Launch"
+    .EXAMPLE
+    Get-ChildItem *.exe | New-Shortcut -Destination "$env:Public\Desktop"
+    #>
     [cmdletbinding()]
     param(
         [Parameter(
@@ -18,6 +17,7 @@ function New-Shortcut
             ValueFromPipelineByPropertyName = $true
             )]
         [Alias("Path")]
+        [string]
         $Source,
 
         [Parameter(
@@ -26,13 +26,15 @@ function New-Shortcut
             ValueFromPipelineByPropertyName = $true
             )]
         [Alias("Folder")]
-        [string]$Destination = "$env:USERPROFILE\Desktop",
+        [string]
+        $Destination = "$env:USERPROFILE\Desktop",
 
         [Parameter(
             Position = 2,
             ValueFromPipelineByPropertyName = $true
             )]
-        [string]$Name
+        [string]
+        $Name
     )
 
     begin

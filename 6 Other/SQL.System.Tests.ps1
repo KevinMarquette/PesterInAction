@@ -40,7 +40,7 @@ Describe "SQL Configuration" {
         }
 
         It "@@ServerName matches hostname" {
-            $name = Invoke-SQLCMD "SELECT @@Servername as Name" | % name
+            $name = (Invoke-SQLCMD "SELECT @@Servername as Name").Name
             $name | Should -Be $env:COMPUTERNAME
         }
     }

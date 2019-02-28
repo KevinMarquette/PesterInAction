@@ -67,18 +67,23 @@ function Assert-NotThree
         [parameter(ValueFromPipeline)]
         $ActualValue
     )
-    if(3 -eq $ActualValue) 
+    process
     {
-        throw "Actual value is 3 but we expected it not to be 3."
-    }
-    else
-    {
-        $ActualValue
+        if (3 -eq $ActualValue) 
+        {
+            throw "Actual value is 3 but we expected it not to be 3."
+        }
+        else
+        {
+            $ActualValue
+        }
     }
 }
 
 4 | Assert-NotThree
 3 | Assert-NotThree
+
+
 
 # Custom Should assertions 
 function BeThree
@@ -87,25 +92,29 @@ function BeThree
     param(
         [parameter(ValueFromPipeline)]
         $ActualValue,
-        [switch]$negate
-    )
 
-    $result = [PSCustomObject]@{
-        Succeeded = $negate
-        FailureMessage = if($negate)
-        {
-            "Actual value is $ActualValue but we expected it not to be 3."
-        }
-        else
-        {
-            "Actual value is $ActualValue and we expected it to be 3."
-        }
-    }
-    if(3 -eq $ActualValue) 
+        [switch]
+        $Negate
+    )
+    process
     {
-        $result.Succeeded = -not $negate
+        $result = [PSCustomObject]@{
+            Succeeded = $Negate
+            FailureMessage = if($Negate)
+            {
+                "Actual value is $ActualValue but we expected it not to be 3."
+            }
+            else
+            {
+                "Actual value is $ActualValue and we expected it to be 3."
+            }
+        }
+        if(3 -eq $ActualValue) 
+        {
+            $result.Succeeded = -not $negate
+        }
+        $result
     }
-    $result
 }
 Add-AssertionOperator -Name 'BeThree' -Test $Function:BeThree
 
@@ -118,7 +127,9 @@ Describe "BeThree" {
     }
 }
 
+
 # poshspec https://github.com/ticketmaster/poshspec
+# Operational Validation DSL
 Find-Module poshspec
 Get-Command -Module poshspec
 

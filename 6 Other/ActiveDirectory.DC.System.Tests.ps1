@@ -209,7 +209,8 @@ Describe "test_domain.Domain objects" {
 
         foreach($delegation in $RequiredDelegation)
         {
-            $AccessList = (Get-Acl -Path $OUPath).Access | where{$_.IdentityReference -eq "test_domain\AD Admin"}
+            $AccessList = (Get-Acl -Path $OUPath).Access | 
+                Where-Object {$_.IdentityReference -eq "test_domain\AD Admin"}
 
             foreach($key in $delegation.keys)
             {
