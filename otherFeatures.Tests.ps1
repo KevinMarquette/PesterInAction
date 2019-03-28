@@ -31,7 +31,7 @@ Describe "-Because random" {
 }
 
 #Example
-C:\ldx\LDUtility\Tests\Select-Unique.Tests.ps1
+code C:\ldx\LDUtility\Tests\Select-Unique.Tests.ps1
 
 # TestDrive: temporary storage location for your tests
 # $TestDrive is full path to the TestDrive: Drive
@@ -146,3 +146,5 @@ Describe "Mock" {
 
 # Example 
 code C:\ldx\LDUtility\Tests\Start-DevTask.Tests.ps1
+
+# add example for https://github.com/pester/Pester/wiki/New-MockObject
