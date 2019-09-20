@@ -88,7 +88,7 @@ $testCases = @(
     @{Alias = 'ps';  Command='Get-Process'}
     @{Alias = 'gm';  Command='Get-Member'}
     @{Alias = 'cls'; Command='Clear-Host'}
-    @{Alias = 'wmi'; Command='Get-WmiObject'}
+    #@{Alias = 'wmi'; Command='Get-WmiObject'}
 )
 
 Describe "ForEach" {

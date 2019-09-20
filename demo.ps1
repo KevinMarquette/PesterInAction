@@ -1,12 +1,12 @@
 ﻿break;  # F5 trap
 #region Demo Prep
 
-$root = "C:\workspace\PesterInAction" # My working directory
+$root = "C:\source\PesterInAction" # My working directory
 pushd $root
 
 function prompt
 {
-    $currentDirectory = (get-location).Path.Replace($root, "Demo:")
+    $currentDirectory = (get-location).Path.Replace($root, "PDX Demo:")
     "PS $currentDirectory>"
 }
 
