@@ -1,9 +1,6 @@
-break; # just a demo
+# just a demo
 
 Describe "SQL Configuration" {
-    BeforeAll{
-        Push-Location
-    }
 
     Context "General Config" {
 
@@ -70,9 +67,9 @@ Describe "SQL Configuration" {
         }
 
         It "SSRS starts as network service" {      
-              
-            $SSRS = Get-WmiObject win32_service  | 
-                where name -eq "reportServer"
+            
+            $SSRS = Get-CimInstance win32_service  | 
+                Where-Object name -eq "reportServer"
 
             $SSRS.StartName | Should -Be "NT AUTHORITY\NETWORKSERVICE"
         }        
@@ -84,8 +81,8 @@ Describe "SQL Configuration" {
         }
 
         It "Network Service has RSExecRole on ReportServer database" {
-         
-               $SQL = @"
+        
+                $SQL = @"
                     SELECT p.name, pp.is_fixed_role
                     FROM sys.database_role_members roles
                     JOIN sys.database_principals p 
@@ -97,9 +94,5 @@ Describe "SQL Configuration" {
             Invoke-SQLCMD $SQL -Database ReportServer | 
                 Should -Not -BeNullOrEmpty
         }
-    }
-
-    AfterAll {
-        Pop-Location
     }
 }

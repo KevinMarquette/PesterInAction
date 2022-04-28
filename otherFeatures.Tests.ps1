@@ -1,4 +1,10 @@
-﻿# Other Pester Features
+﻿[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
+[cmdletbinding()]
+param()
+
+# Other Pester Features
+
+
 
 # Basic test with context 
 Describe "GenericTest" {
@@ -14,6 +20,7 @@ Describe "GenericTest" {
 }
 
 
+
 # -Because for better failure messages
 Describe "-Because" {
     It "Shows -Because" {
@@ -24,14 +31,13 @@ Describe "-Because" {
 
 Describe "-Because random" {
     It "Shows -Because in action" {
-        Random -Maximum 2 | Should -Be 0 -Because 'Some assumption'
-        Random -Maximum 2 | Should -Be 0 -Because 'Main test case'
-        Random -Maximum 2 | Should -Be 0 -Because 'Verify cleanup'
+        Get-Random -Maximum 2 | Should -Be 0 -Because 'Some assumption'
+        Get-Random -Maximum 2 | Should -Be 0 -Because 'Main test case'
+        Get-Random -Maximum 2 | Should -Be 0 -Because 'Verify cleanup'
     }
 }
 
-#Example
-code C:\ldx\LDUtility\Tests\Select-Unique.Tests.ps1
+
 
 # TestDrive: temporary storage location for your tests
 # $TestDrive is full path to the TestDrive: Drive
@@ -45,8 +51,8 @@ Describe "TestDrive" {
     }
 }
 
-#Example
-code C:\ldx\LDUtility\Tests\Invoke-LDGit.Tests.ps1
+
+
 
 # BeforeEach
 
@@ -67,6 +73,8 @@ Describe "BeforeEach" {
     }
 }
 
+
+
 Describe "More before/after actions" {
     BeforeAll {Write-Host 'Execute BeforeAll'}
     BeforeEach {Write-Host 'Execute BeforeEach'}
@@ -79,72 +87,45 @@ Describe "More before/after actions" {
     It 'Second It' {Write-Host 'Execute Second It'}
 }
 
-# Example
-code C:\ldx\LDUtility\Tests\Protect-Clipboard.Tests.ps1
-code C:\ldx\LDUtility\Tests\Unprotect-Clipboard.Tests.ps1
+
+
 
 # TestCases
-$testCases = @(
-    @{Alias = 'ps';  Command='Get-Process'}
-    @{Alias = 'gm';  Command='Get-Member'}
-    @{Alias = 'cls'; Command='Clear-Host'}
-    @{Alias = 'wmi'; Command='Get-WmiObject'}
-)
-
-Describe "ForEach" {
-    foreach($node in $testCases)
-    {
-        It ('Alias {0} is for command {1}' -f $node.Alias,$node.Command) {
-            $result = Get-Alias $node.Alias
-            $result.Definition | Should -Be $node.Command
-        }
-    }
+BeforeDiscovery {
+    $testCases = @(
+        @{Alias = 'ps';  Command='Get-Process'}
+        @{Alias = 'gm';  Command='Get-Member'}
+        @{Alias = 'cls'; Command='Clear-Host'}
+        @{Alias = 'wmi'; Command='Get-WmiObject'} # Will fail
+    )
 }
-
 # Built-in test case support
-Describe "Testcases" {
+Describe "Testcases" -ForEach $testCases {
     
-    It 'Alias <Alias> is for command <Command>' -TestCases $testCases {
-        param($Alias,$Command)
+    It 'Alias <Alias> is for command <Command>'  {
         $result = Get-Alias $Alias
         $result.Definition | Should -Be $Command
     }
 }
 
-# Examples
-code C:\ldx\LDNetworking\Tests\Test-LDEndpoint.Tests.ps1
-code C:\ldx\LDXSet\Tests\Test-MDAppSetting.Tests.ps1
 
 
-# InModuleScope
-InModuleScope -ModuleName Pester {
-    Describe "Inside Pester" {
-        It "finds the list of safe commands" {
-            $SafeCommands | Should -Not -BeNullOrEmpty
-        }
-    }
-}
 
-# Example
-code C:\ldx\LDAppSettings\Tests\Classes\ConfigTransforms\JsonConfigTransform.Tests.ps1
 
 
 # Mock: replaces a powershell command with alternate functionality
 Describe "Mock" {
-    
-    Mock Get-Date {return [datetime]"1/2/14"}
+    BeforeAll {
+        Mock Get-Date {return [datetime]"1/2/14"}
+    }
 
     It "Has date" {
         Get-Date | Should -Not -BeNullOrEmpty
         Get-Date | Should -Be "01/02/2014 00:00:00"
-    }   
-     
-    It "Used our Mock" {
-        Assert-MockCalled Get-Date -Times 2
+    
+        Should -invoke -CommandName Get-Date -Times 2
     }
 }
 
-# Example 
-code C:\ldx\LDUtility\Tests\Start-DevTask.Tests.ps1
 
 # add example for https://github.com/pester/Pester/wiki/New-MockObject

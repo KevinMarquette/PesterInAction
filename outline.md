@@ -3,7 +3,6 @@
 * Building Unit tests for a script 15
 * Writing Testable Code 20
 * Build release pipeline 15
-* * 
 * Operational Validation 20
 * Pester 5, What to expect 10
 
