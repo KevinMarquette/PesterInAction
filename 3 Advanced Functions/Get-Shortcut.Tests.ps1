@@ -1,12 +1,13 @@
-$sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(".Tests.", ".")
-$file = Get-ChildItem "$PSScriptRoot\$sut"
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
+[cmdletbinding()]
+param()
 
-Describe $file.BaseName -Tags Unit {
+Describe "Get-Shortcut" -Tags Unit {
 
     Context "Basic features" {
 
         BeforeAll {
-            . $file
+            . $PSScriptRoot\Get-Shortcut.ps1
             . $PSScriptRoot\New-Shortcut.ps1
     
             Set-Content TestDrive:\test.txt  -Value "New file"

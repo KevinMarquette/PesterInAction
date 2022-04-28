@@ -11,20 +11,19 @@ function New-Shortcut
     [cmdletbinding()]
     param(
         [Parameter(
-            Mandatory         = $true,
-            Position          = 0,
+            Mandatory = $true,
+            Position = 0,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
             )]
         [Alias("Path")]
-        [string]
+        [string[]]
         $Source,
 
         [Parameter(
-            Mandatory = $true,
             Position  = 1,
             ValueFromPipelineByPropertyName = $true
-            )]
+        )]
         [Alias("Folder")]
         [string]
         $Destination = "$env:USERPROFILE\Desktop",
@@ -32,7 +31,7 @@ function New-Shortcut
         [Parameter(
             Position = 2,
             ValueFromPipelineByPropertyName = $true
-            )]
+        )]
         [string]
         $Name
     )
@@ -46,19 +45,20 @@ function New-Shortcut
     {
         foreach($node in $Source)
         {
-            Write-Verbose $node
+            Write-Verbose "Processing shortcut [$node]"
             if(Test-Path $node)
             {
                 $SourceFile = Get-ChildItem $node
 
                 if($Name)
                 {
-                    $ShortcutPath = Join-Path (Resolve-Path $Destination) ( $Name + ".lnk")
+                    $fileName = $Name + ".lnk"
                 }
                 else
-                {                
-                    $ShortcutPath = Join-Path (Resolve-Path $Destination) ( $SourceFile.BaseName + ".lnk")
+                {       
+                    $fileName = $SourceFile.BaseName + ".lnk"         
                 }   
+                $ShortcutPath = Join-Path (Resolve-Path $Destination) $fileName
                 
                 $Shortcut = $WScriptShell.CreateShortcut($ShortcutPath)
 

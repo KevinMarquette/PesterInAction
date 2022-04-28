@@ -1,20 +1,20 @@
-<#
-.SYNOPSIS
-Reads the attributes of a shortcut
-.EXAMPLE
-Get-Shortcut -Path .\shortcut.lnk
-#>
 
 function Get-Shortcut
 {
+    <#
+    .SYNOPSIS
+    Reads the attributes of a shortcut
+    .EXAMPLE
+    Get-Shortcut -Path .\shortcut.lnk
+    #>
     [cmdletbinding()]
     param(
         [Parameter(
-            Mandatory         = $true,
-            Position          = 0,
+            Mandatory = $true,
+            Position = 0,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-            )]
+        )]
         $Path
     )
 
@@ -29,7 +29,8 @@ function Get-Shortcut
         {
             if(Test-Path $node)
             {
-                $Shortcut = $WScriptShell.CreateShortcut((Resolve-Path $node))
+                $fullPath = Resolve-Path $node
+                $Shortcut = $WScriptShell.CreateShortcut($fullPath)
                 Write-Output $Shortcut
             }
         }

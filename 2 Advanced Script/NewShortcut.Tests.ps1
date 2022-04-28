@@ -1,6 +1,4 @@
-﻿$sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(".Tests.", ".")
-$file = Get-ChildItem "$PSScriptRoot\$sut"
-
+﻿
 Describe "New Shortcut advanced script" {
 
     It "Creates a shortcut" {
@@ -10,7 +8,7 @@ Describe "New Shortcut advanced script" {
 
         Set-Content TestDrive:\test.txt -Value "New file"
 
-        & $file -Source "TestDrive:\test.txt" -Destination $testdrive
+        & $PSScriptRoot\NewShortcut.ps1 -Source "TestDrive:\test.txt" -Destination $testdrive
 
         "TestDrive:\test.lnk" | Should -Exist
     }

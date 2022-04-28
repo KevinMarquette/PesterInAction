@@ -1,13 +1,12 @@
-﻿$sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(".Tests.", ".")
-$file = Get-ChildItem "$PSScriptRoot\$sut"
-
-Describe $file.BaseName -Tags Unit {
+﻿
+Describe "New-Shortcut" -Tags Unit {
 
     Context "Basic features" {
 
         BeforeAll {
 
-            . $file
+            . $PSScriptRoot\Get-Shortcut.ps1
+            . $PSScriptRoot\New-Shortcut.ps1
     
             Set-Content TestDrive:\test.txt  -Value "New file"
             Set-Content TestDrive:\test2.txt -Value "New file 2"
@@ -31,14 +30,14 @@ Describe $file.BaseName -Tags Unit {
 
             $result = New-Shortcut -Source "TestDrive:\test.txt" -Destination $testdrive -Name "Test3"
             $result | Should -Not -BeNullOrEmpty
-            $result | Should Exist
+            $result | Should -Exist
             $result.GetType().Name | Should -Be 'FileInfo'
         }
 
         It "Creates multiple shortcuts with named parameter" {
 
             $files  = Get-ChildItem TestDrive:\test*.txt
-            $result = New-Shortcut -Source $files -Destination $testdrive
+            $result = New-Shortcut -Source $files -Destination "$testdrive"
 
             $result | Should -Not -BeNullOrEmpty
             $result | Should -HaveCount 4

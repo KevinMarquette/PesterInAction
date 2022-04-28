@@ -8,57 +8,45 @@
     This is a very generic set of tests that should apply to all modules that use a functions sub folder
 #>
 
-
-$here = Split-Path -Parent $MyInvocation.MyCommand.Path
-$module = Split-Path -Leaf $here
-
-Describe "Module: $module" -Tags Unit {
+Describe "Demo Module" -Tags Unit {
     
     Context "Module Configuration" {
         
-        It "Has a root module file ($module.psm1)" {        
+        It "Has a root module file (Demo.psm1)" {        
             
-            "$here\$module.psm1" | Should -Exist
+            "$PSScriptRoot\Demo.psm1" | Should -Exist
         }
 
-        It "Is valid Powershell (Has no script errors)" {
-
-            $contents = Get-Content -Path "$here\$module.psm1" -ErrorAction SilentlyContinue
-            $errors = $null
-            $null = [System.Management.Automation.PSParser]::Tokenize($contents, [ref]$errors)
-            $errors | Should -HaveCount 0
+        It "Has a manifest file (Demo.psd1)" {
+            
+            "$PSScriptRoot\Demo.psd1" | Should -Exist
         }
 
-        It "Has a manifest file ($module.psd1)" {
+        It "Contains a root module path in the manifest (RootModule = '.\Demo.psm1')" {
             
-            "$here\$module.psd1" | Should -Exist
-        }
-
-        It "Contains a root module path in the manifest (RootModule = '.\$module.psm1')" {
-            
-            "$here\$module.psd1" | Should -Exist
-            "$here\$module.psd1" | Should -FileContentMatch "\.\\$module.psm1"
+            "$PSScriptRoot\Demo.psd1" | Should -Exist
+            "$PSScriptRoot\Demo.psd1" | Should -FileContentMatch "\.\\Demo.psm1"
         }
 
         It "Has a functions folder" {        
             
-            "$here\functions" | Should -Exist
+            "$PSScriptRoot\functions" | Should -Exist
         }
 
         It "Has functions in the functions folder" {        
             
-            "$here\functions\*.ps1" | Should -Exist
+            "$PSScriptRoot\functions\*.ps1" | Should -Exist
         }
     }
 
     #Demo Note: Reminder that Pester commands are just Powershell commands
 
-    $Functions = Get-ChildItem "$here\functions\*.ps1" -ErrorAction SilentlyContinue | 
+    $Functions = Get-ChildItem "$PSScriptRoot\functions\*.ps1" -ErrorAction SilentlyContinue | 
         Where-Object {$_.name -NotMatch "Tests.ps1"}
 
     foreach($CurrentFunction in $Functions)
     {
-        Context "Function $module::$($CurrentFunction.BaseName)" {
+        Context "Function Demo::$($CurrentFunction.BaseName)" {
         
             It "Has a Pester test" {
 

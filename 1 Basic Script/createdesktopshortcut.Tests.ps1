@@ -1,12 +1,10 @@
-﻿$sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(".Tests.", ".")
-$file = Get-ChildItem "$PSScriptRoot\$sut"
-
-Describe "Create desktop shortcut script" {
+﻿
+Describe "Shortcut script" {
 
     It "Creates a shortcut on the desktop" {
         
-        & $file.FullName
-
+        & $PSScriptRoot\createdesktopshortcut.ps1
+        
         $path = "$env:USERPROFILE\Desktop\Notepad.lnk"
         $path | Should -Exist
     }

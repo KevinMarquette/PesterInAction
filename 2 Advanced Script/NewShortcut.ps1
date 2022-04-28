@@ -1,7 +1,7 @@
 [cmdletbinding()]
 param(
     $Source,
-    [string]$Destination = "$env:USERPROFILE\Desktop"
+    $Destination = "$env:USERPROFILE\Desktop"
 )
 
 if(Test-Path $Source)
